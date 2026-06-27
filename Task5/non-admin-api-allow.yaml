@@ -1,0 +1,23 @@
+# Разрешает трафик только между front-end и back-end-api (пара «Продажи»).
+# Все остальные поды не могут подключиться к back-end-api.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: non-admin-api-allow
+  namespace: task5
+  labels:
+    app.kubernetes.io/part-of: propdevelopment
+spec:
+  podSelector:
+    matchLabels:
+      role: back-end-api
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              role: front-end
+      ports:
+        - protocol: TCP
+          port: 80

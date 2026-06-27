@@ -1,0 +1,22 @@
+# Разрешает трафик только между admin-front-end и admin-back-end-api (пара «Админка»).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: admin-api-allow
+  namespace: task5
+  labels:
+    app.kubernetes.io/part-of: propdevelopment
+spec:
+  podSelector:
+    matchLabels:
+      role: admin-back-end-api
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              role: admin-front-end
+      ports:
+        - protocol: TCP
+          port: 80
