@@ -1,0 +1,15 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sDisallowHostPath
+metadata:
+  name: disallow-hostpath-audit-zone
+  labels:
+    app.kubernetes.io/part-of: propdevelopment
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces: ["audit-zone"]
+  parameters:
+    message: "hostPath запрещён политикой PropDevelopment"
